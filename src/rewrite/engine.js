@@ -141,7 +141,7 @@ class P5Element extends EventEmitter {
 	get childNodes() {
 		return !this.stream ? this.node.childNodes : null;
 	}
-	get innerHTML() {
+	get innerengine() {
 		return !this.stream
 			? serialize({
 					nodeName: "#document-fragment",
@@ -149,10 +149,10 @@ class P5Element extends EventEmitter {
 				})
 			: null;
 	}
-	set innerHTML(val) {
+	set innerengine(val) {
 		if (!this.stream) this.node.childNodes = parseFragment(val).childNodes;
 	}
-	get outerHTML() {
+	get outerengine() {
 		return !this.stream
 			? serialize({
 					nodeName: "#document-fragment",
@@ -160,7 +160,7 @@ class P5Element extends EventEmitter {
 				})
 			: null;
 	}
-	set outerHTML(val) {
+	set outerengine(val) {
 		if (!this.stream)
 			this.parentNode.childNodes.splice(
 				this.parentNode.childNodes.findIndex((node) => node === this.node),
@@ -261,4 +261,4 @@ class TextEvent {
 	}
 }
 
-export default HTML;
+export default engine;
