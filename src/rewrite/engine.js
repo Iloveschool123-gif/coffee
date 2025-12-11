@@ -5,7 +5,7 @@ import { parse, parseFragment, serialize } from "parse5";
  * @typedef {import('./index').default} Ultraviolet
  */
 
-class HTML extends EventEmitter {
+class ENGINE extends EventEmitter {
 	/**
 	 *
 	 * @param {Ultraviolet} ctx
