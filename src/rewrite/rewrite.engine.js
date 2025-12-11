@@ -7,10 +7,10 @@
  * @param {Ultraviolet} ctx
  */
 export function attributes(ctx, meta = ctx.meta) {
-	const { html, js, attributePrefix } = ctx;
+	const { engine, js, attributePrefix } = ctx;
 	const origPrefix = attributePrefix + "-attr-";
 
-	html.on("attr", (attr, type) => {
+	engine.on("attr", (attr, type) => {
 		if (
 			attr.node.tagName === "base" &&
 			attr.name === "href" &&
@@ -26,12 +26,12 @@ export function attributes(ctx, meta = ctx.meta) {
 
 		if (type === "rewrite" && isSrcset(attr.name)) {
 			attr.node.setAttribute(origPrefix + attr.name, attr.value);
-			attr.value = html.wrapSrcset(attr.value, meta);
+			attr.value = engine.wrapSrcset(attr.value, meta);
 		}
 
-		if (type === "rewrite" && isHtml(attr.name)) {
+		if (type === "rewrite" && isengine(attr.name)) {
 			attr.node.setAttribute(origPrefix + attr.name, attr.value);
-			attr.value = html.rewrite(attr.value, {
+			attr.value = engine.rewrite(attr.value, {
 				...meta,
 				document: true,
 				injectHead: attr.options.injectHead || [],
@@ -61,7 +61,7 @@ export function attributes(ctx, meta = ctx.meta) {
 		}
 
 		/*
-        if (isHtml(attr.name)) {
+        if (isengine(attr.name)) {
 
         };
 
@@ -81,9 +81,9 @@ export function attributes(ctx, meta = ctx.meta) {
  * @param {Ultraviolet} ctx
  */
 export function text(ctx) {
-	const { html, js, css } = ctx;
+	const { engine, js, css } = ctx;
 
-	html.on("text", (text, type) => {
+	engine.on("text", (text, type) => {
 		if (text.element.tagName === "script") {
 			text.value =
 				type === "rewrite" ? js.rewrite(text.value) : js.source(text.value);
@@ -194,8 +194,8 @@ export function isEvent(name) {
  * @param {Ultraviolet} ctx
  */
 export function injectHead(ctx) {
-	const { html } = ctx;
-	html.on("element", (element, type) => {
+	const { engine } = ctx;
+	egine.on("element", (element, type) => {
 		if (type !== "rewrite") return false;
 		if (element.tagName !== "head") return false;
 		if (!("injectHead" in element.options)) return false;
@@ -211,7 +211,7 @@ export function createJsInject(cookies = "", referrer = "") {
 	);
 }
 
-export function createHtmlInject(
+export function createengineInject(
 	handlerScript,
 	bundleScript,
 	clientScript,
@@ -301,7 +301,7 @@ export function isForbidden(name) {
 	);
 }
 
-export function isHtml(name) {
+export function isengine(name) {
 	return name === "srcdoc";
 }
 
